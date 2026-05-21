@@ -34,7 +34,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         setToken(storedToken);
         setUser(JSON.parse(storedUser) as User);
       }
-    } catch {
+    } catch (err: unknown) {
+      console.error('Auth rehydrate error', err);
       // If parsing fails, clear corrupt storage
       localStorage.removeItem('token');
       localStorage.removeItem('user');

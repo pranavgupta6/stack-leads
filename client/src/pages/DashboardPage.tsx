@@ -29,8 +29,9 @@ const DashboardPage = () => {
 				const response = await getLeadsApi({ page: 1, sort: 'latest' });
 				setLeads(response.data.slice(0, 5));
 				setTotalLeads(response.pagination?.total || 0);
-			} catch {
-				showToast('Failed to load dashboard data', 'error');
+			} catch (error: unknown) {
+				const msg = error instanceof Error ? error.message : 'Failed to load dashboard data';
+				showToast(msg, 'error');
 			} finally {
 				setIsLoading(false);
 			}
@@ -55,8 +56,8 @@ const DashboardPage = () => {
 					lost: lost.pagination?.total || 0,
 					contacted: contacted.pagination?.total || 0,
 				});
-			} catch {
-				// silently fail for stats
+			} catch (error: unknown) {
+				console.error('Failed to fetch stats', error);
 			}
 		};
 		fetchStats();

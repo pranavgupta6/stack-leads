@@ -41,8 +41,9 @@ const LeadsPage = () => {
 			const response = await getLeadsApi(filters);
 			setLeads(response.data);
 			setPagination(response.pagination || null);
-		} catch {
-			showToast('Failed to fetch leads', 'error');
+		} catch (error: unknown) {
+			const message = (error as { response?: { data?: { message?: string } } })?.response?.data?.message || 'Failed to fetch leads';
+			showToast(message, 'error');
 		} finally {
 			setIsLoading(false);
 		}
@@ -107,8 +108,9 @@ const LeadsPage = () => {
 			} else {
 				await fetchLeads();
 			}
-		} catch {
-			showToast('Failed to delete lead', 'error');
+		} catch (error: unknown) {
+			const message = (error as { response?: { data?: { message?: string } } })?.response?.data?.message || 'Failed to delete lead';
+			showToast(message, 'error');
 		} finally {
 			setIsDeleting(false);
 		}
@@ -123,8 +125,9 @@ const LeadsPage = () => {
 				search: filters.search,
 			});
 			showToast('CSV exported successfully', 'success');
-		} catch {
-			showToast('Failed to export CSV', 'error');
+		} catch (error: unknown) {
+			const message = (error as { response?: { data?: { message?: string } } })?.response?.data?.message || 'Failed to export CSV';
+			showToast(message, 'error');
 		} finally {
 			setIsExporting(false);
 		}

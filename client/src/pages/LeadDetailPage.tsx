@@ -65,8 +65,10 @@ const LeadDetailPage = () => {
 			setLead(response.data);
 			setIsEditModalOpen(false);
 			showToast('Lead updated successfully', 'success');
-		} catch {
-			showToast('Failed to update lead', 'error');
+		} catch (error: unknown) {
+			const message = (error as { response?: { data?: { message?: string } } })
+				?.response?.data?.message || 'Failed to update lead';
+			showToast(message, 'error');
 		} finally {
 			setIsSubmitting(false);
 		}
@@ -79,8 +81,10 @@ const LeadDetailPage = () => {
 			await deleteLeadApi(lead._id);
 			showToast('Lead deleted successfully', 'success');
 			navigate('/leads');
-		} catch {
-			showToast('Failed to delete lead', 'error');
+		} catch (error: unknown) {
+			const message = (error as { response?: { data?: { message?: string } } })
+				?.response?.data?.message || 'Failed to delete lead';
+			showToast(message, 'error');
 			setIsDeleting(false);
 		}
 	};
