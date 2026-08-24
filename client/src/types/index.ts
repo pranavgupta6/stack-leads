@@ -1,24 +1,27 @@
-export type LeadStatus = 'New' | 'Contacted' | 'Qualified' | 'Lost';
-export type LeadSource = 'Website' | 'Instagram' | 'Referral';
-export type UserRole = 'admin' | 'sales';
+export type StaffRole = 'General Manager' | 'Front Desk' | 'Housekeeping' | 'Chef' | 'Waiter' | 'Security' | 'Maintenance';
+export type StaffShift = 'Morning' | 'Evening' | 'Night';
+export type StaffStatus = 'Active' | 'On Leave' | 'Inactive';
 
-export interface User {
-  _id: string;
-  name: string;
+export interface StaffMember {
+  id: string;
+  employeeCode: string;
+  fullName: string;
   email: string;
-  role: UserRole;
-  createdAt: string;
+  phone: string;
+  role: StaffRole;
+  department: string;
+  shift: StaffShift;
+  status: StaffStatus;
+  joiningDate: string;
 }
 
-export interface Lead {
-  _id: string;
-  name: string;
-  email: string;
-  status: LeadStatus;
-  source: LeadSource;
-  createdBy: string | User;
-  createdAt: string;
-  updatedAt: string;
+export interface StaffFilters {
+  page: number;
+  q?: string;
+  role?: StaffRole | '';
+  department?: string;
+  shift?: StaffShift | '';
+  status?: StaffStatus | '';
 }
 
 export interface PaginationMeta {
@@ -26,41 +29,31 @@ export interface PaginationMeta {
   page: number;
   limit: number;
   totalPages: number;
-  hasNextPage: boolean;
-  hasPrevPage: boolean;
 }
 
-export interface ApiResponse<T> {
+export interface StaffListResponse {
   success: boolean;
-  data: T;
-  pagination?: PaginationMeta;
-}
-
-export interface CreateLeadDto {
-  name: string;
-  email: string;
-  status: LeadStatus;
-  source: LeadSource;
-}
-
-export type UpdateLeadDto = Partial<CreateLeadDto>;
-
-export interface LeadFilters {
+  data: StaffMember[];
+  meta?: Record<string, unknown>;
   page: number;
-  status?: LeadStatus | '';
-  source?: LeadSource | '';
-  search?: string;
-  sort?: 'latest' | 'oldest';
+  limit: number;
+  total: number;
+  totalPages: number;
 }
 
-export interface LoginDto {
+export interface StaffFormData {
+  fullName: string;
   email: string;
-  password: string;
+  phone: string;
+  role: StaffRole;
+  shift: StaffShift;
+  status: StaffStatus;
+  joiningDate: string;
 }
 
-export interface RegisterDto {
-  name: string;
-  email: string;
-  password: string;
-  role: UserRole;
+export interface FilterOptions {
+  roles: StaffRole[];
+  departments: string[];
+  shifts: StaffShift[];
+  statuses: StaffStatus[];
 }
